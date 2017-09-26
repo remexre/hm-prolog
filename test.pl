@@ -24,6 +24,7 @@
 %% Create a test predicate.
 test :-
 	Expr = letE(id, absE(x, varE(x)), varE(id)),
-	Type = absT(Alpha, fnT(Alpha, Alpha)),
+	Type = absT(a, fnT(varT(a), varT(a))),
 	isExpr(Expr),
+	isType(Type),
 	hm([], Expr, Type).

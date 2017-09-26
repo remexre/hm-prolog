@@ -24,3 +24,9 @@ isExpr(varE(N)) :- atom(N).
 isExpr(absE(A, B)) :- atom(A), isExpr(B).
 isExpr(appE(F, A)) :- isExpr(F), isExpr(A).
 isExpr(letE(X, E0, E1)) :- atom(X), isExpr(E0), isExpr(E1).
+
+% Determine if a type is well-formed.
+isType(intT).
+isType(varT(N)) :- atom(N).
+isType(fnT(T0, T1)) :- isType(T0), isType(T1).
+isType(absT(N, T)) :- atom(N), isType(T).

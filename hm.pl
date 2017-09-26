@@ -27,8 +27,8 @@ replace(_, _, intT, intT).
 replace(Var, RT, fnT(T0, T1), fnT(T2, T3)) :-
 	replace(Var, RT, T0, T2),
 	replace(Var, RT, T1, T3).
-replace(Var, _, genT(Var, T), genT(Var, T)).
-replace(V0, RT, genT(V1, T0), genT(V1, T1)) :-
+replace(Var, _, absT(Var, T), absT(Var, T)).
+replace(V0, RT, absT(V1, T0), absT(V1, T1)) :-
 	replace(V0, RT, T0, T1).
 replace(Var, RT, varT(Var), RT).
 
@@ -43,13 +43,13 @@ freeTyVar(varT(Var), Var).
 freeTyVar(fnT(T0, T1), Var) :-
 	freeTyVar(T0, Var);
 	freeTyVar(T1, Var).
-freeTyVar(genT(V1, T), V0) :-
+freeTyVar(absT(V1, T), V0) :-
 	\+ V0 = V1,
 	freeTyVar(T, V0).
 
 % Determine if a variable is generalized by the type.
-tyVarOf(genT(V, _), V).
-tyVarOf(genT(_, T), V) :-
+tyVarOf(absT(V, _), V).
+tyVarOf(absT(_, T), V) :-
 	tyVarOf(T, V).
 
 % Determine if a type is a subtype of another.
@@ -99,7 +99,7 @@ hm(Gamma, E, T1) :-
 	!.
 
 % Gen
-hm(Gamma, E, genT(Alpha, T)) :-
+hm(Gamma, E, absT(Alpha, T)) :-
 	hm(Gamma, E, T),
 	\+ free(Gamma, Alpha),
 	!.
